@@ -903,10 +903,13 @@ int Level::getTopSolidBlock(int x, int z)
 
 	while (true)
 	{
-		if (!getMaterial(x, y, z)->blocksMotion())
+		Material* pMtl = getMaterial(x, y, z);
+		if (pMtl == nullptr || !pMtl->blocksMotion())
 			break;
+
 		if (!y)
 			return -1;
+
 		y--;
 	}
 
@@ -917,14 +920,17 @@ int Level::getTopSolidBlock(int x, int z)
 	while (true)
 	{
 		TileID tile = pChunk->getTile(cx, y, cz);
-		if (tile)
+
+		if (tile && Tile::tiles[tile] != nullptr)
 		{
-			if (Tile::tiles[tile]->m_pMaterial->blocksMotion())
+			Material* pTileMaterial = Tile::tiles[tile]->material;
+			if (pTileMaterial->blocksMotion())
 				return y + 1;
-			
-			if (Tile::tiles[tile]->m_pMaterial->isLiquid())
+
+			if (pTileMaterial->isLiquid())
 				break;
 		}
+
 		if (!--y)
 			return -1;
 	}
