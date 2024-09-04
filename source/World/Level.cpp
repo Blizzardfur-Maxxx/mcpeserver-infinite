@@ -923,7 +923,7 @@ int Level::getTopSolidBlock(int x, int z)
 
 		if (tile && Tile::tiles[tile] != nullptr)
 		{
-			Material* pTileMaterial = Tile::tiles[tile]->material;
+			Material* pTileMaterial = Tile::tiles[tile]->m_pMaterial;
 			if (pTileMaterial->blocksMotion())
 				return y + 1;
 
